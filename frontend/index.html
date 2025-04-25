@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Graphical Light Scheduler</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f7fa;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #287bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Graphical Light Scheduler</h2>
+    <label>On Time:</label>
+    <input type="time" id="onTime"><br>
+    <label>Off Time:</label>
+    <input type="time" id="offTime"><br>
+    <button onclick="sendSchedule()">Submit</button>
+  </div>
+
+  <script>
+    function sendSchedule() {
+      const onTime = document.getElementById("onTime").value;
+      const offTime = document.getElementById("offTime").value;
+      const ws = new WebSocket("ws://localhost:6789");
+
+      ws.onopen = () => {
+        ws.send(JSON.stringify({ on: onTime, off: offTime }));
+        alert("Schedule sent!");
+        ws.close();
+      };
+    }
+  </script>
+</body>
+</html>
